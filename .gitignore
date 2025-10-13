@@ -1,0 +1,17 @@
+# Environment variables
+.env
+.env.local
+
+# n8n data
+n8n_data/
+workflows/
+
+# Docker volumes
+postgres_data/
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
+logs/
