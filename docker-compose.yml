@@ -40,6 +40,7 @@ services:
     volumes:
       - n8n_data:/home/node/.n8n
       - ./workflows:/home/node/.n8n/workflows
+      - ./videos:/tmp/videos  # Mount thư mục để lưu videos ra ngoài
     depends_on:
       postgres:
         condition: service_healthy
