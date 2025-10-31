@@ -1,6 +1,6 @@
 # n8n Docker Setup
 
-Setup n8n với Docker và PostgreSQL trên macOS.
+Setup n8n với Docker và PostgreSQL trên macOS. **Custom image bao gồm ffmpeg** để xử lý video.
 
 ## 📋 Yêu cầu
 
@@ -9,25 +9,65 @@ Setup n8n với Docker và PostgreSQL trên macOS.
 
 ## 🚀 Khởi động
 
-### 1. Start n8n
+### 1. Build Docker image (lần đầu tiên hoặc khi có thay đổi Dockerfile)
+
+```bash
+docker-compose build
+```
+
+Hoặc build với no-cache để cài đặt lại từ đầu:
+
+```bash
+docker-compose build --no-cache
+```
+
+### 2. Start n8n
 
 ```bash
 docker-compose up -d
 ```
 
-### 2. Kiểm tra logs
+### 3. Kiểm tra logs
 
 ```bash
 docker-compose logs -f n8n
 ```
 
-### 3. Truy cập n8n
+### 4. Truy cập n8n
 
 Mở trình duyệt và truy cập: http://localhost:5678
 
 **Thông tin đăng nhập mặc định:**
 - Username: `admin`
 - Password: `admin123`
+
+### 5. Kiểm tra ffmpeg đã được cài đặt
+
+```bash
+docker-compose exec n8n ffmpeg -version
+```
+
+## 🎬 Tính năng ffmpeg
+
+Custom Docker image này đã cài đặt sẵn:
+- **ffmpeg** - Xử lý, convert, compress video/audio
+- **python3** - Chạy Python scripts nếu cần
+- **pip** - Cài đặt Python packages
+
+Bạn có thể sử dụng ffmpeg trong Code node hoặc Execute Command node:
+
+```javascript
+// Example trong Code node
+const { exec } = require('child_process');
+
+exec('ffmpeg -version', (error, stdout, stderr) => {
+  if (error) {
+    console.error(`Error: ${error}`);
+    return;
+  }
+  console.log(`ffmpeg version: ${stdout}`);
+});
+```
 
 ## 📥 Import Workflows
 
